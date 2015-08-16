@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name           Razionatore offerte
+// @name           urMktHelper
 // @namespace      http://userscripts.org/users/249211
 // @include        http://www.urban-rivals.com/*/market/?show=0&action=buy&group=all&orderby=desc&sortby=date*
 // @grant          GM_getValue
