@@ -5,6 +5,8 @@
 // @grant          GM_getValue
 // @grant          GM_setValue
 // @grant          GM_deleteValue
+// @version        1
+// @updateURL      https://github.com/kalup/URScripts/raw/master/urMktHelper.user.js
 // ==/UserScript==
 
 var k=GM_getValue("riskValue",0),l,m,n;0==k?(m=l=.9,n=.99):1==k?(l=.85,m=.86,n=.99):2==k?(l=.85,m=.86,n=.95):3==k?(l=.81,m=.82,n=.99):4==k?(l=.81,m=.82,n=.95):(l=.81,m=.82,n=.9);var r=GM_getValue("reloadTime",2E3),t=GM_getValue("imgDetectSafe",!0),u=GM_getValue("autoBuy",!1),v=GM_getValue("sound",!0),w=GM_getValue("isRunning",!1);GM_deleteValue("isRunning");function x(c){null!==c&&c.parentNode.removeChild(c)}
