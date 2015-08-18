@@ -5,7 +5,7 @@
 // @grant          GM_getValue
 // @grant          GM_setValue
 // @grant          GM_deleteValue
-// @version        1.2.1
+// @version        1.2.2
 // @updateURL      https://github.com/kalup/URScripts/raw/master/urMktHelper.user.js
 // ==/UserScript==
 
