@@ -314,6 +314,10 @@ checkForUpdate(version) {
 	StringReplace newVersion, newVersion, "version := "
 	if(newVersion > version)
 	{
-		MsgBox New Version
+		FileDelete, urAutoPlay.ahk.old
+		FileMove, urAutoPlay.ahk, urAutoPlay.ahk.old
+		FileMove, tmp.ahk, urAutoPlay.ahk
+		MsgBox New Version, please restart
+		ExitApp
 	}
 }
