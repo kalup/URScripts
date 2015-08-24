@@ -301,8 +301,8 @@ setRandomPillz() {
 }
 
 checkForUpdate(version) {
-	URL := www.example.com
-	UrlDownloadToFile, URL, tmp.ahk
+	URL := "https://raw.githubusercontent.com/kalup/URScripts/master/urAutoPlay.ahk"
+	UrlDownloadToFile, %URL%, tmp.ahk
 	if(ErrorLevel = 1)
 	{
 		MsgBox Impossible to connect to remote URL: %URL%
@@ -311,7 +311,7 @@ checkForUpdate(version) {
 	FileReadLine, newVersion, tmp.ahk, 1
 	if(ErrorLevel = 1)
 		return
-	StringReplace newVersion, newVersion, version := 
+	StringReplace newVersion, newVersion, "version := "
 	if(newVersion > version)
 	{
 		MsgBox New Version
