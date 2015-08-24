@@ -1,4 +1,4 @@
-version := 0.09
+version := 0.1
 
 order := Object()
 pillz := Object()
@@ -320,4 +320,5 @@ checkForUpdate(version) {
 		MsgBox New Version, please restart
 		ExitApp
 	}
+	FileDelete, tmp.ahk
 }
