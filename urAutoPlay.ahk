@@ -311,7 +311,7 @@ checkForUpdate(version) {
 	FileReadLine, newVersion, tmp.ahk, 1
 	if(ErrorLevel = 1)
 		return
-	StringReplace newVersion, newVersion, "version := "
+	StringReplace newVersion, newVersion,version := 
 	if(newVersion > version)
 	{
 		FileDelete, urAutoPlay.ahk.old
