@@ -1,51 +1,4 @@
-version := 0.11
-
-order := Object()
-pillz := Object()
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  ;;;
-;;  ;;;;;;;;;;;                                   ;;;;;;;;;;;  ;;;
-;;  ;;;;;;;;;;;         Configurazione BOT        ;;;;;;;;;;;  ;;;
-;;  ;;;;;;;;;;;   TODO: Muovere in un file ini    ;;;;;;;;;;;  ;;;
-;;  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  ;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-		; prima a essere giocata
-				order[1] :=		2
-				pillz[1] :=		3
-		; seconda a essere giocata
-				order[2] :=		3
-				pillz[2] :=		1
-		; terza a essere giocata
-				order[3] :=		4
-				pillz[3] :=		3
-		; quarta a essere giocata
-				order[4] :=		1
-				pillz[4] :=		5
-
-		; mettere a 1 per pillz random (massimo 12 nella partita)
-				randomPillz :=	0
-				
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-		; mettere a 1 se si vuole che giochi solo nelle ore del TQ
-				onlyTQ := 0				
-
-;;  ;;;;;;;;;;;                                   ;;;;;;;;;;;  ;;;
-;;  ;;;;;;;;;;;                                   ;;;;;;;;;;;  ;;;
-;;  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  ;;;
-;;  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  ;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-running := 0
-
-topPixel := 0
-leftPixel := 0
-
-selected := 0
-
-
+version := 0.12
 
 #NoEnv
 SendMode Input
@@ -60,14 +13,40 @@ CoordMode, Mouse, Screen
 
 checkForUpdate(version)
 
+order := Object()
+pillz := Object()
+
+randomPillz := 0
+maxPillz := 12
+
+onlyTQ := 0
+
+running := 0
+
+topPixel := 0
+leftPixel := 0
+
+selected := 0
+
+loadIni()
 
 if(randomPillz)
 	setRandomPillz()
 
+^l:: ;reload INI
+{
+	loadIni()
+}
+
 ^k:: ;autoPlay
 {
 	running := !running
+	if(running)
+		MsgBox Started.
+	else
+		MsgBox Stopped.
 	mBegin:
+	MsgBox %maxPillz%
 	if(!running) {
 		return
 	}
@@ -89,7 +68,7 @@ if(randomPillz)
 	}
 	else if ErrorLevel = 0
 	{
-		if(onlyTQ && mod(A_Hour,2) <> 0 &&  A_Min > 4) {
+		if(onlyTQ && mod(A_Hour,2) <> 0) {
 			sleepTime := (60 - A_min) * 60 * 1000
 			sleep, %sleepTime%
 			goto mRestart
@@ -129,7 +108,7 @@ if(randomPillz)
 	if(!running) {
 		return
 	}
-	if(onlyTQ && mod(A_Hour,2) <> 0 &&  A_Min > 4) {
+	if(onlyTQ && mod(A_Hour,2) <> 0) {
 		sleepTime := (60 - A_min) * 60 * 1000
 		sleep, %sleepTime%
 		goto mRestart
@@ -280,7 +259,7 @@ playCardAtPosition(pos) {
 		}
 		; premi Tasto +
 		mClick(600, 250)
-		Sleep 100
+		Sleep 60
 	}
 	Sleep 100
 	if(!running) {
@@ -295,18 +274,19 @@ playCardAtPosition(pos) {
 
 setRandomPillz() {
 	Global pillz
-	Random, r, 0, 6
+	Random, r, 0, maxPillz
 	pillz[1] := r
-	Random, r, 0, 6
+	rem := maxPillz - pillz[1]
+	Random, r, 0, rem
 	pillz[2] := r
-	rem := 12 - pillz[1] - pillz[2]
+	rem := maxPillz - pillz[1] - pillz[2]
 	Random, r, 0, rem
 	pillz[3] := r
 	pillz[4] := rem - pillz[3]
 }
 
 checkForUpdate(version) {
-	URL := "https://raw.githubusercontent.com/kalup/URScripts/master/urAutoPlay.ahk"
+	URL := "https://raw.githubusercontent.com/kalup/URScripts/master/Game/urAutoPlay.ahk"
 	UrlDownloadToFile, %URL%, tmp.ahk
 	if(ErrorLevel = 1)
 	{
@@ -326,4 +306,31 @@ checkForUpdate(version) {
 		ExitApp
 	}
 	FileDelete, tmp.ahk
+}
+
+loadIni() {
+	Global pillz
+	Global order
+	Global randomPillz
+	Global maxPillz
+	Global onlyTQ
+	; prima a essere giocata
+	IniRead, order%1%, urAutoPlaySettings.ini, Order, Card_1, 1
+	IniRead, pillz%1%, urAutoPlaySettings.ini, Pillz, Card_1, 3
+	; seconda a essere giocata
+	IniRead, order%2%, urAutoPlaySettings.ini, Order, Card_1, 2
+	IniRead, pillz%2%, urAutoPlaySettings.ini, Pillz, Card_1, 3
+	; terza a essere giocata
+	IniRead, order%3%, urAutoPlaySettings.ini, Order, Card_1, 3
+	IniRead, pillz%3%, urAutoPlaySettings.ini, Pillz, Card_1, 3
+	; quarta a essere giocata
+	IniRead, order%4%, urAutoPlaySettings.ini, Order, Card_1, 4
+	IniRead, pillz%4%, urAutoPlaySettings.ini, Pillz, Card_1, 3
+
+	; se a 1 mette pillz a random
+	IniRead, randomPillz, urAutoPlaySettings.ini, Pillz, randomPillz, 0
+	IniRead, maxPillz, urAutoPlaySettings.ini, Pillz, maxPillz, 12
+
+	; se a 1 gioca solo nelle ore del TQ
+	IniRead, onlyTQ, urAutoPlaySettings.ini, Time, onlyTQ, 0
 }
