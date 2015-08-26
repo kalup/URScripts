@@ -1,4 +1,4 @@
-version := 0.12
+version := 0.121
 
 #NoEnv
 SendMode Input
@@ -46,7 +46,6 @@ if(randomPillz)
 	else
 		MsgBox Stopped.
 	mBegin:
-	MsgBox %maxPillz%
 	if(!running) {
 		return
 	}
