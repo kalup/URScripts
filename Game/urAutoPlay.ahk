@@ -1,4 +1,4 @@
-version := 0.121
+version := 0.122
 
 #NoEnv
 SendMode Input
@@ -36,6 +36,7 @@ if(randomPillz)
 ^l:: ;reload INI
 {
 	loadIni()
+	return
 }
 
 ^k:: ;autoPlay
@@ -314,17 +315,17 @@ loadIni() {
 	Global maxPillz
 	Global onlyTQ
 	; prima a essere giocata
-	IniRead, order%1%, urAutoPlaySettings.ini, Order, Card_1, 1
-	IniRead, pillz%1%, urAutoPlaySettings.ini, Pillz, Card_1, 3
+	IniRead, o1, urAutoPlaySettings.ini, Order, Card_1, 1
+	IniRead, p1, urAutoPlaySettings.ini, Pillz, Card_1, 3
 	; seconda a essere giocata
-	IniRead, order%2%, urAutoPlaySettings.ini, Order, Card_1, 2
-	IniRead, pillz%2%, urAutoPlaySettings.ini, Pillz, Card_1, 3
+	IniRead, o2, urAutoPlaySettings.ini, Order, Card_2, 2
+	IniRead, p2, urAutoPlaySettings.ini, Pillz, Card_2, 3
 	; terza a essere giocata
-	IniRead, order%3%, urAutoPlaySettings.ini, Order, Card_1, 3
-	IniRead, pillz%3%, urAutoPlaySettings.ini, Pillz, Card_1, 3
+	IniRead, o3, urAutoPlaySettings.ini, Order, Card_3, 3
+	IniRead, p3, urAutoPlaySettings.ini, Pillz, Card_3, 3
 	; quarta a essere giocata
-	IniRead, order%4%, urAutoPlaySettings.ini, Order, Card_1, 4
-	IniRead, pillz%4%, urAutoPlaySettings.ini, Pillz, Card_1, 3
+	IniRead, o4, urAutoPlaySettings.ini, Order, Card_4, 4
+	IniRead, p4, urAutoPlaySettings.ini, Pillz, Card_4, 3
 
 	; se a 1 mette pillz a random
 	IniRead, randomPillz, urAutoPlaySettings.ini, Pillz, randomPillz, 0
@@ -332,4 +333,13 @@ loadIni() {
 
 	; se a 1 gioca solo nelle ore del TQ
 	IniRead, onlyTQ, urAutoPlaySettings.ini, Time, onlyTQ, 0
+	
+	order[1] := o1
+	order[2] := o2
+	order[3] := o3
+	order[4] := o4
+	pillz[1] := p1
+	pillz[2] := p2
+	pillz[3] := p3
+	pillz[4] := p4
 }
