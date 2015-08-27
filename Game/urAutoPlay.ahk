@@ -1,4 +1,4 @@
-version := 0.124
+version := 0.125
 
 #NoEnv
 SendMode Input
@@ -295,8 +295,8 @@ setRandomPillz() {
 }
 
 checkForUpdate(version) {
-	URL := "https://raw.githubusercontent.com/kalup/URScripts/master/Game/urAutoPlay.ahk"
-	UrlDownloadToFile, %URL%, tmp.ahk
+	Random, rand, 1, 10255
+	UrlDownloadToFile, https://raw.githubusercontent.com/kalup/URScripts/master/Game/urAutoPlay.ahk?%rand%, tmp.ahk
 	if(ErrorLevel = 1)
 	{
 		MsgBox Impossible to connect to remote URL: %URL%
