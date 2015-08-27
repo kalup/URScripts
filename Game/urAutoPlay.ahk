@@ -1,4 +1,4 @@
-version := 0.123
+version := 0.124
 
 #NoEnv
 SendMode Input
@@ -37,6 +37,13 @@ if(randomPillz)
 {
 	MsgBox Reloaded data
 	loadIni()
+	return
+}
+
+^j:: ;emergency stop
+{
+	running:= 0
+	MsgBox Stopped.
 	return
 }
 
@@ -275,6 +282,7 @@ playCardAtPosition(pos) {
 
 setRandomPillz() {
 	Global pillz
+	Global maxPillz
 	Random, r, 0, maxPillz
 	pillz[1] := r
 	rem := maxPillz - pillz[1]
