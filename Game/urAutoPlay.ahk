@@ -1,4 +1,4 @@
-version := 0.1251
+version := 0.126
 
 #NoEnv
 SendMode Input
@@ -32,6 +32,8 @@ loadIni()
 
 if(randomPillz)
 	setRandomPillz()
+	
+return
 
 ^l:: ;reload INI
 {
@@ -283,24 +285,32 @@ playCardAtPosition(pos) {
 setRandomPillz() {
 	Global pillz
 	Global maxPillz
-	Random, r, 0, maxPillz
+	sumR := 0
+	Random, r, 0, 100
+	sumR += r
 	pillz[1] := r
-	rem := maxPillz - pillz[1]
-	Random, r, 0, rem
+	Random, r, 0, 100
+	sumR += r
 	pillz[2] := r
-	rem := maxPillz - pillz[1] - pillz[2]
-	Random, r, 0, rem
+	Random, r, 0, 100
+	sumR += r
 	pillz[3] := r
-	pillz[4] := rem - pillz[3]
+	Random, r, 0, 100
+	sumR += r
+	pillz[4] := r
+	pillz[1] := Round(pillz[1]/sumR*12)
+	pillz[2] := Round(pillz[2]/sumR*12)
+	pillz[3] := Round(pillz[3]/sumR*12)
+	pillz[4] := maxPillz - pillz[1] - pillz[2] - pillz[3]
 }
 
 checkForUpdate(version) {
 	Random, rand, 1, 10255
 	UrlDownloadToFile, https://raw.githubusercontent.com/kalup/URScripts/master/Game/urAutoPlay.ahk?%rand%, tmp.ahk
-	if(ErrorLevel = 1)
-	{
-		MsgBox Impossible to connect to remote URL: %URL%
-	}
+	;if(ErrorLevel = 1)
+	;{
+	;	MsgBox Impossible to connect to remote URL: %URL%
+	;}
 	FileReadLine, newVersion, tmp.ahk, 1
 	if(ErrorLevel = 1)
 		return
