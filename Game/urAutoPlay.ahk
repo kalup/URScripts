@@ -1,4 +1,4 @@
-version := 0.125
+version := 0.1251
 
 #NoEnv
 SendMode Input
@@ -300,7 +300,6 @@ checkForUpdate(version) {
 	if(ErrorLevel = 1)
 	{
 		MsgBox Impossible to connect to remote URL: %URL%
-		return
 	}
 	FileReadLine, newVersion, tmp.ahk, 1
 	if(ErrorLevel = 1)
