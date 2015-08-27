@@ -1,4 +1,4 @@
-version := 0.122
+version := 0.123
 
 #NoEnv
 SendMode Input
@@ -35,6 +35,7 @@ if(randomPillz)
 
 ^l:: ;reload INI
 {
+	MsgBox Reloaded data
 	loadIni()
 	return
 }
