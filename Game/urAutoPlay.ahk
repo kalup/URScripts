@@ -1,4 +1,4 @@
-version := 0.126
+version := 0.127
 
 #NoEnv
 SendMode Input
@@ -225,12 +225,42 @@ return
 	}
 	else if ErrorLevel = 0
 	{
-		leftPixel := FoundX - 304
-		topPixel := FoundY
-		mClick(363,480)
-		sleep 300
-		Send {Enter}
 		sleep 2000
+		ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *20 %A_ScriptDir%\backToMenu.png
+		if ErrorLevel = 2
+		{
+			MsgBox Missing backToMenu.png file.
+			return
+		}
+		else if ErrorLevel = 0
+		{
+			sleep 4000
+			ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *20 %A_ScriptDir%\backToMenu.png
+			if ErrorLevel = 2
+			{
+				MsgBox Missing backToMenu.png file.
+				return
+			}
+			else if ErrorLevel = 0
+			{
+				sleep 8000
+				ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *20 %A_ScriptDir%\backToMenu.png
+				if ErrorLevel = 2
+				{
+					MsgBox Missing backToMenu.png file.
+					return
+				}
+				else if ErrorLevel = 0
+				{
+					leftPixel := FoundX - 304
+					topPixel := FoundY
+					mClick(363,480)
+					sleep 300
+					Send {Enter}
+					sleep 2000
+				}
+			}
+		}
 	}
 	
 	
