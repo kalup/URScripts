@@ -1,4 +1,4 @@
-version := 0.127
+version := 0.201
 
 #NoEnv
 SendMode Input
@@ -124,10 +124,10 @@ return
 		goto mRestart
 	}
 	; premi Tasto Combatti
-	mClick(12, 486)
+	mClick(14, 576)
 	sleep 300
-	; premi eventuale tasto missioni
-	mClick(365, 233)
+	; premi eventuale tasto missioni; TOCHECK
+	mClick(495, 300)
 	; controlla se hai ottenuto una carta
 	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *20 %A_ScriptDir%\cartaVinta.png
 	if ErrorLevel = 2
@@ -137,14 +137,15 @@ return
 	}
 	else if ErrorLevel = 0
 	{
-		mClick(366, 470)
+	; premi eventualmente sulla carta vinta per non aggiungerla al mazzo; TOCHECK
+		mClick(495, 513)
 	}
 	sleep 300
 	if(!running) {
 		return
 	}
 	; premi Tasto Combatti
-	mClick(12, 486)
+	mClick(14, 576)
 	if(randomPillz)
 		setRandomPillz()
 	goto mRestart
@@ -183,19 +184,19 @@ return
 			}
 			else
 			{
-				leftPixel := FoundX - 628
+				leftPixel := FoundX - 887
 				topPixel := FoundY - 11
 			}
 		}
 		else
 		{
-			leftPixel := FoundX - 628
+			leftPixel := FoundX - 887
 			topPixel := FoundY - 11
 		}
 	}
 	else
 	{
-		leftPixel := FoundX - 551
+		leftPixel := FoundX - 810
 		topPixel := FoundY - 10
 	}
 	
@@ -209,7 +210,7 @@ return
 		selected += 1
 	}
 	; premi l'eventuale pulsante non è il tuo turno
-	mClick(366,297)
+	mClick(495,352)
 	
 	
 	
@@ -252,9 +253,9 @@ return
 				}
 				else if ErrorLevel = 0
 				{
-					leftPixel := FoundX - 304
+					leftPixel := FoundX
 					topPixel := FoundY
-					mClick(363,480)
+					mClick(500,577)
 					sleep 300
 					Send {Enter}
 					sleep 2000
@@ -290,15 +291,15 @@ playCardAtPosition(pos) {
 	Global running
 	rep := pillz[pos]
 	; premi la carta
-	x := order[pos] * (126 + 45) - 63
-	mClick(x,430)
+	x := order[pos] * (157 + 72) - 78
+	mClick(x,470)
 	Sleep 500
 	Loop, %rep% {
 		if(!running) {
 			return
 		}
 		; premi Tasto +
-		mClick(600, 250)
+		mClick(718, 300)
 		Sleep 60
 	}
 	Sleep 100
@@ -306,7 +307,7 @@ playCardAtPosition(pos) {
 		return
 	}
 	; premi Tasto Combatti
-	mClick(526, 313)
+	mClick(704, 359)
 	sleep 300
 	; premi esc
 	Send {Escape}
