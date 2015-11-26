@@ -1,4 +1,4 @@
-version := 0.201
+version := 0.300
 
 #NoEnv
 SendMode Input
@@ -27,6 +27,8 @@ topPixel := 0
 leftPixel := 0
 
 selected := 0
+
+newVersion := 1
 
 loadIni()
 
@@ -124,10 +126,16 @@ return
 		goto mRestart
 	}
 	; premi Tasto Combatti
-	mClick(14, 576)
+	if(newVersion = 1)
+		mClick(14, 576)
+	else
+		mClick(12, 486)
 	sleep 300
 	; premi eventuale tasto missioni; TOCHECK
-	mClick(495, 300)
+	if(newVersion = 1)
+		mClick(495, 300)
+	else
+		mClick(365, 233)
 	; controlla se hai ottenuto una carta
 	ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *20 %A_ScriptDir%\cartaVinta.png
 	if ErrorLevel = 2
@@ -138,14 +146,20 @@ return
 	else if ErrorLevel = 0
 	{
 	; premi eventualmente sulla carta vinta per non aggiungerla al mazzo; TOCHECK
-		mClick(495, 513)
+		if(newVersion = 1)
+			mClick(495, 513)
+		else
+			mClick(366, 470)
 	}
 	sleep 300
 	if(!running) {
 		return
 	}
 	; premi Tasto Combatti
-	mClick(14, 576)
+	if(newVersion = 1)
+		mClick(14, 576)
+	else
+		mClick(12, 486)
 	if(randomPillz)
 		setRandomPillz()
 	goto mRestart
@@ -184,20 +198,35 @@ return
 			}
 			else
 			{
-				leftPixel := FoundX - 887
-				topPixel := FoundY - 11
+				if(newVersion = 1) {
+					leftPixel := FoundX - 887
+					topPixel := FoundY - 11
+				} else {
+					leftPixel := FoundX - 628
+					topPixel := FoundY - 11
+				}
 			}
 		}
 		else
 		{
-			leftPixel := FoundX - 887
-			topPixel := FoundY - 11
+			if(newVersion = 1) {
+				leftPixel := FoundX - 887
+				topPixel := FoundY - 11
+			} else {
+				leftPixel := FoundX - 628
+				topPixel := FoundY - 11
+			}
 		}
 	}
 	else
 	{
-		leftPixel := FoundX - 810
-		topPixel := FoundY - 10
+		if(newVersion = 1) {
+			leftPixel := FoundX - 810
+			topPixel := FoundY - 10
+		} else {
+			leftPixel := FoundX - 551
+			topPixel := FoundY - 10
+		}
 	}
 	
 	mPlayRound:
@@ -210,7 +239,10 @@ return
 		selected += 1
 	}
 	; premi l'eventuale pulsante non è il tuo turno
-	mClick(495,352)
+	if(newVersion = 1)
+		mClick(495,352)
+	else
+		mClick(366,297)
 	
 	
 	
@@ -253,9 +285,15 @@ return
 				}
 				else if ErrorLevel = 0
 				{
-					leftPixel := FoundX
-					topPixel := FoundY
-					mClick(500,577)
+					if(newVersion = 1) {
+						leftPixel := FoundX
+						topPixel := FoundY
+						mClick(500,577)
+					} else {
+						leftPixel := FoundX
+						topPixel := FoundY
+						mClick(370,465)
+					}
 					sleep 300
 					Send {Enter}
 					sleep 2000
@@ -291,15 +329,23 @@ playCardAtPosition(pos) {
 	Global running
 	rep := pillz[pos]
 	; premi la carta
-	x := order[pos] * (157 + 72) - 78
-	mClick(x,470)
+	if( newVersion = 1) {
+		x := order[pos] * (157 + 72) - 78
+		mClick(x,470)
+	} else {
+		x := order[pos] * (126 + 45) - 63
+		mClick(x,430)
+	}
 	Sleep 500
 	Loop, %rep% {
 		if(!running) {
 			return
 		}
 		; premi Tasto +
-		mClick(718, 300)
+		if( newVersion = 1)
+			mClick(718, 300)
+		else
+			mClick(600, 250)
 		Sleep 60
 	}
 	Sleep 100
@@ -307,7 +353,10 @@ playCardAtPosition(pos) {
 		return
 	}
 	; premi Tasto Combatti
-	mClick(704, 359)
+	if( newVersion = 1)
+		mClick(704, 359)
+	else
+		mClick(526, 313)
 	sleep 300
 	; premi esc
 	Send {Escape}
@@ -363,25 +412,77 @@ loadIni() {
 	Global randomPillz
 	Global maxPillz
 	Global onlyTQ
+	Global newVersion
 	; prima a essere giocata
-	IniRead, o1, urAutoPlaySettings.ini, Order, Card_1, 1
-	IniRead, p1, urAutoPlaySettings.ini, Pillz, Card_1, 3
+	IniRead, o1, urAutoPlaySettings.ini, Order, Card_1, -1
+	if(o1 = -1) {
+		IniWrite, 1, urAutoPlaySettings.ini, Order, Card_1
+		o1 := 1
+	}
+	IniRead, p1, urAutoPlaySettings.ini, Pillz, Card_1, -1
+	if(p1 = -1) {
+		IniWrite, 3, urAutoPlaySettings.ini, Pillz, Card_1
+		p1 := 3
+	}
 	; seconda a essere giocata
-	IniRead, o2, urAutoPlaySettings.ini, Order, Card_2, 2
-	IniRead, p2, urAutoPlaySettings.ini, Pillz, Card_2, 3
+	IniRead, o2, urAutoPlaySettings.ini, Order, Card_2, -1
+	if(o2 = -1) {
+		IniWrite, 2, urAutoPlaySettings.ini, Order, Card_2
+		o2 := 2
+	}
+	IniRead, p2, urAutoPlaySettings.ini, Pillz, Card_2, -1
+	if(p2 = -1) {
+		IniWrite, 3, urAutoPlaySettings.ini, Pillz, Card_2
+		p2 := 3
+	}
 	; terza a essere giocata
-	IniRead, o3, urAutoPlaySettings.ini, Order, Card_3, 3
-	IniRead, p3, urAutoPlaySettings.ini, Pillz, Card_3, 3
+	IniRead, o3, urAutoPlaySettings.ini, Order, Card_3, -1
+	if(o3 = -1) {
+		IniWrite, 3, urAutoPlaySettings.ini, Order, Card_3
+		o3 := 3
+	}
+	IniRead, p3, urAutoPlaySettings.ini, Pillz, Card_3, -1
+	if(p3 = -1) {
+		IniWrite, 3, urAutoPlaySettings.ini, Pillz, Card_3
+		p3 := 3
+	}
 	; quarta a essere giocata
-	IniRead, o4, urAutoPlaySettings.ini, Order, Card_4, 4
-	IniRead, p4, urAutoPlaySettings.ini, Pillz, Card_4, 3
+	IniRead, o4, urAutoPlaySettings.ini, Order, Card_4, -1
+	if(o4 = -1) {
+		IniWrite, 4, urAutoPlaySettings.ini, Order, Card_4
+		o4 := 4
+	}
+	IniRead, p4, urAutoPlaySettings.ini, Pillz, Card_4, -1
+	if(p4 = -1) {
+		IniWrite, 3, urAutoPlaySettings.ini, Pillz, Card_4
+		p4 := 3
+	}
 
 	; se a 1 mette pillz a random
-	IniRead, randomPillz, urAutoPlaySettings.ini, Pillz, randomPillz, 0
-	IniRead, maxPillz, urAutoPlaySettings.ini, Pillz, maxPillz, 12
+	IniRead, randomPillz, urAutoPlaySettings.ini, Pillz, randomPillz, -1
+	if(randomPillz = -1) {
+		IniWrite, 0, urAutoPlaySettings.ini, Pillz, randomPillz
+		randomPillz := 0
+	}
+	IniRead, maxPillz, urAutoPlaySettings.ini, Pillz, maxPillz, -1
+	if(maxPillz = -1) {
+		IniWrite, 12, urAutoPlaySettings.ini, Pillz, maxPillz
+		maxPillz := 12
+	}
 
 	; se a 1 gioca solo nelle ore del TQ
-	IniRead, onlyTQ, urAutoPlaySettings.ini, Time, onlyTQ, 0
+	IniRead, onlyTQ, urAutoPlaySettings.ini, Time, onlyTQ, -1
+	if(onlyTQ = -1) {
+		IniWrite, 0, urAutoPlaySettings.ini, Time, onlyTQ
+		onlyTQ := 0
+	}
+
+	; se a 1 considera di giocare con la nuova versione di Urban, altrimenti con la vecchia
+	IniRead, newVersion, urAutoPlaySettings.ini, Game, newVersion, -1
+	if(newVersion = -1) {
+		IniWrite, 1, urAutoPlaySettings.ini, Game, newVersion
+		newVersion := 1
+	}
 	
 	order[1] := o1
 	order[2] := o2
